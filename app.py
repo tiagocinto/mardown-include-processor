@@ -1,15 +1,17 @@
 import click
 
+MD_DIR='md'
+
 def read_include(include_file):
-    with open(include_file) as f:
+    with open(f'{MD_DIR}/{include_file}') as f:
         include_content = f.read()
     return include_content
 
 def save_processed_md_file(processed_content, base_md_file):
-    processed_md_file_name = f'processed_{base_md_file}'
+    processed_md_file_name = f'{MD_DIR}/processed_{base_md_file}'
     with open(processed_md_file_name, 'w') as f:
         f.write(processed_content)
-    print(f'processed content saved to {processed_md_file_name}')
+    print(f'processed content saved to {MD_DIR}/{processed_md_file_name}')
 
 @click.command()
 @click.option(
@@ -19,7 +21,7 @@ def save_processed_md_file(processed_content, base_md_file):
 )
 def process_base_md_file(base_md_file):
     processed_content = ''
-    with open(base_md_file) as f:
+    with open(f'{MD_DIR}/{base_md_file}') as f:
         for line in f:
             if "[include]" in line.strip():
                 processed_content += read_include(line.strip().split("[include]")[1]) 
